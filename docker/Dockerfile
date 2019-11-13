@@ -44,9 +44,22 @@ WORKDIR /tools/ceres-solver/build
 RUN cmake .. -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF
 RUN make -j4 && make install
 
-# Install colmap
+# Install OpenCV
 WORKDIR /tools
-RUN git clone https://github.com/colmap/colmap.git
+RUN apt-get update && apt-get install -y build-essential libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
+RUN git clone https://github.com/opencv/opencv.git
+RUN git clone https://github.com/opencv/opencv_contrib.git
+WORKDIR /tools/opencv
+RUN mkdir build
+WORKDIR /tools/opencv/build
+RUN cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=/usr/local ..
+RUN make -j4 && make install
+
+# Install colmap
+# WORKDIR /tools
+# RUN git clone https://github.com/colmap/colmap.git
+RUN mkdir -p /tools/colmap/
+ADD insight/ /tools/colmap
 WORKDIR /tools/colmap
 RUN git checkout dev
 RUN mkdir build
@@ -57,7 +70,8 @@ RUN make -j4 && make install
 # Remove unneeded files
 RUN rm -rf /tools
 
-# RUN mkdir /home
-RUN chmod -R 777 /home
-ENV HOME /home
-WORKDIR /home
+# # RUN mkdir /home
+# RUN chmod -R 777 /home
+# ENV HOME /home
+# WORKDIR /home
+ WORKDIR /code

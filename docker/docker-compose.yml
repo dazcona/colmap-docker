@@ -6,7 +6,7 @@ services:
     
     image: test_colmap
     container_name: col_container
-    working_dir: /code
+    # working_dir: /code
     build:
       context: ../
       dockerfile: docker/Dockerfile

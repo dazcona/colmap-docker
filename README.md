@@ -23,21 +23,24 @@ access control disabled, clients can connect from any host
 
 make dev
 
-$ echo $DISPLAY
-unix:1
-
 $ export DATASET_PATH="/code/projects/gerrard-hall/"
 $ echo "$DATASET_PATH"
 /code/projects/gerrard-hall/
 
 $ colmap automatic_reconstructor -h
+$ colmapAtInsight automatic_reconstructor -h
 
-$ colmap automatic_reconstructor \
+$ colmapAtInsight automatic_reconstructor \
     --workspace_path $DATASET_PATH \
     --image_path $DATASET_PATH/images \
     --dense 1 \
     --use_gpu 1
 
+$ colmap stereo_fusion \
+    --workspace_path $DATASET_PATH/dense/0 \
+    --workspace_format COLMAP \
+    --input_type geometric \
+    --output_path $DATASET_PATH/dense/0/fused.ply
 
 ## Resources
 
